@@ -1,0 +1,10 @@
+CREATE TABLE productos (
+  id SERIAL PRIMARY KEY,
+  descripcion VARCHAR(255) NOT NULL,
+  imagen VARCHAR(255),
+  precio DOUBLE PRECISION NOT NULL,
+  unidadMedida VARCHAR(255) NOT NULL,
+  medida VARCHAR(255) NOT NULL,
+  idCategoria INT,
+  FOREIGN KEY (idCategoria) REFERENCES categorias(id)
+);
