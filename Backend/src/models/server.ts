@@ -2,8 +2,12 @@ import express, {Application, Request, Response} from 'express';
 import cors from 'cors';
 import routeProducto from '../routes/producto';
 import routeCategoria from '../routes/categoria';
+import routeTest from '../routes/test';
 
-import db from '../db/connection'
+
+
+import db  from '../db/connection'
+import dbmy from '../db/connection'
 import setupAssociations from './associations';
 
 
@@ -21,6 +25,7 @@ class Server {
         this.midlewares();
         this.routes();
         this.dbConnect();
+        this.dbMyConnect();
         this.listen();
         setupAssociations();
     }
@@ -28,6 +33,8 @@ class Server {
         this.app.listen(this.port,() =>{
             console.log(`Aplicacion corriendo en el puerto ${this.port}`)
         });
+
+        
     }
 
     midlewares(){
@@ -44,13 +51,24 @@ class Server {
             })
         })
         this.app.use('/productos/', routeProducto),
-        this.app.use('/categorias', routeCategoria)
+        this.app.use('/categorias', routeCategoria),
+        this.app.use('/personas', routeTest)
     }
 
 
     async dbConnect(){
-        await db.authenticate();
-        console.log('base de datos conectada')
+        console.log("Iniiciando conexion")
+        try {
+            await db.authenticate();
+            console.log('base de datos conectada');
+        } catch (error) {
+            console.error('No se pudo conectar a la base de datos:', error);
+        }
+    }
+
+    async dbMyConnect(){
+        await dbmy.authenticate();
+        console.log('base de datos mysql conectada')
     }
 }
 
